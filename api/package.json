@@ -1,0 +1,20 @@
+{
+  "name": "pallone-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "micro"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.8.10",
+    "jwt-simple": "^0.5.5",
+    "micro": "^9.3.3",
+    "micro-cors": "^0.1.1",
+    "micro-mw": "^1.1.1",
+    "microrouter": "^3.1.3"
+  }
+}
