@@ -3,7 +3,7 @@ const { send } = require('micro');
 const { applyMiddleware } = require('micro-mw');
 const { router, get, post } = require('microrouter');
 const user = require('./actions/users');
-const { authenticate } = require('./middlewares');
+const { authguard, getUser } = require('./middlewares');
 
 
 module.exports = cors(router(
@@ -11,7 +11,9 @@ module.exports = cors(router(
 
     post('/login', user.login),
 
-    get('/user', applyMiddleware([authenticate], user.stuff)),
+    get('/user', applyMiddleware([authguard], user.stuff)),
+    
+    get('/stuff', applyMiddleware([getUser], user.stuff)),
 
 
     get('/*', (req, res) => send(res, 404)),

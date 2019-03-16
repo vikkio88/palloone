@@ -2,26 +2,41 @@ const { send } = require('micro');
 const dayjs = require('dayjs');
 const { auth } = require('../libs/auth');
 
-const authenticate = (req, res) => {
+const extractUser = req => {
     if (!req.headers.authorization) {
-        return send(res, 401);
+        return false;
     }
+
     let payload = {};
     try {
         payload = auth.decode(req.headers.authorization);
     } catch (e) {
-        return send(res, 401);
+        return false;
     }
-    console.log(payload);
 
     if (dayjs().unix() > (payload.expires || 0)) {
+        return false;
+    }
+
+    return payload.user;
+}
+
+const authguard = (req, res) => {
+    const user = extractUser(req);
+    if (!user) {
         return send(res, 401);
     }
 
-    req.user = payload.user;
+    req.user = user;
+}
+
+const getUser = (req, res) => {
+    const user = extractUser(req);
+    req.user = user;
 }
 
 
 module.exports = {
-    authenticate
+    authguard,
+    getUser
 }
