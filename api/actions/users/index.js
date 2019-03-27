@@ -1,5 +1,6 @@
 const { send, json } = require('micro');
 const { auth } = require('../../libs/auth');
+const { response } = require('../../libs/formatters');
 
 const login = async (req, res) => {
     const body = await json(req);
@@ -7,12 +8,12 @@ const login = async (req, res) => {
         return send(res, 401);
     }
 
-    return { token: auth.encode({ username: body.username }) };
-}
+    return response({ token: auth.encode({ username: body.username }) });
+};
 
 const stuff = (req, res) => {
-    return send(res, 200, { user: req.user });
-}
+    return response({ user: req.user });
+};
 
 
 module.exports = {
